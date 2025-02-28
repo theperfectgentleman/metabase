@@ -1,14 +1,21 @@
 FROM metabase/metabase:latest
 
-# Explicitly expose port 3000
-EXPOSE 3000
+# Create directory for data
+RUN mkdir -p /data
 
-# Set environment variable to listen on port 3000
-ENV MB_JETTY_PORT=3000
+# Explicitly expose port 10000
+EXPOSE 10000
 
-# Memory optimization for limited environments
-ENV JAVA_OPTS="-Xmx450m -Xms150m"
-
-# Use the embedded H2 database for Metabase's application data
+# Set environment variables
+ENV MB_JETTY_PORT=10000
 ENV MB_DB_TYPE=h2
-ENV MB_DB_FILE=/var/lib/metabase/metabase.db
+ENV MB_DB_FILE=/data/metabase.db
+
+# Use percentage-based memory limits instead of absolute values
+ENV JAVA_TOOL_OPTIONS="-XX:MaxRAMPercentage=75.0 -XX:MinRAMPercentage=50.0"
+
+# Set the working directory
+WORKDIR /app
+
+# Set proper permissions for the data directory
+RUN chmod -R 777 /data
