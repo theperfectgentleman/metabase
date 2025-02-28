@@ -9,17 +9,15 @@ services:
     numInstances: 1
     healthCheckPath: /api/health
     envVars:
-      - key: MB_DB_TYPE
-        value: postgres
-      - key: MB_DB_DBNAME
-        value: metabasedb
-      - key: MB_DB_PORT
-        value: 6543
-      - key: MB_DB_USER
-        value: postgres.btcvuivvimeiwzjnzmv
-      - key: MB_DB_PASS
-        sync: false
-      - key: MB_DB_HOST
-        value: aws-0-eu-central-1.pooler.supabase.com
       - key: JAVA_OPTS
-        value: -Xmx1g
+        value: -Xmx450m -Xms150m
+      - key: PORT
+        value: 3000
+      - key: MB_DB_TYPE
+        value: h2
+      - key: MB_DB_FILE
+        value: /var/lib/metabase/metabase.db
+    disk:
+      name: metabase-data
+      mountPath: /var/lib/metabase
+      sizeGB: 1
