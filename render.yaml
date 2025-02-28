@@ -1,23 +1,24 @@
 services:
   - type: web
     name: metabase
-    env: docker
-    repo: https://github.com/theperfectgentleman/metabase.git
-    region: ohio
     plan: free
+    env: docker
+    region: ohio
     branch: main
-    numInstances: 1
     healthCheckPath: /api/health
+    dockerfilePath: ./Dockerfile
     envVars:
-      - key: JAVA_OPTS
-        value: -Xmx450m -Xms150m
+      - key: MB_JETTY_PORT
+        value: 10000
       - key: PORT
-        value: 3000
+        value: 10000
+      - key: JAVA_TOOL_OPTIONS
+        value: -XX:MaxRAMPercentage=75.0 -XX:MinRAMPercentage=50.0
       - key: MB_DB_TYPE
         value: h2
       - key: MB_DB_FILE
-        value: /var/lib/metabase/metabase.db
+        value: /data/metabase.db
     disk:
       name: metabase-data
-      mountPath: /var/lib/metabase
+      mountPath: /data
       sizeGB: 1
